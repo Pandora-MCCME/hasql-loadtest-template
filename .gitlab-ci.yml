@@ -1,0 +1,36 @@
+haskell:
+  variables:
+    STACK_ROOT: /builds/hypermath/mccme-systems/.stack
+  image: $CI_REGISTRY/images/haskell
+  stage: build
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - ".stack"
+      - "**/.stack-work"
+  script:
+    - stack setup
+    - stack install --local-bin-path bin
+  artifacts:
+    paths:
+      - bin
+    expire_in: 1 week
+
+docker:
+  stage: build
+  needs:
+    - job: haskell
+      artifacts: true  
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+  script:
+    - >-
+      /kaniko/executor
+      --cache=true
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
