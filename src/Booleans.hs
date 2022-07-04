@@ -21,9 +21,9 @@ class Enum a => IsNewBool a where
   toBool :: a -> Bool
   toBool = toEnum . fromEnum
 
-newBoolOptions :: forall a. (Enum a, Read a) => Options
+newBoolOptions :: forall a. (IsNewBool a, Read a) => Options
 newBoolOptions = defaultOptions
-  { constructorTagModifier = map toLower . show . (/=) 0 . fromEnum . read @a
+  { constructorTagModifier = map toLower . show . toBool . read @a
   }
 
 data RunRelease = NoRelease | Release
