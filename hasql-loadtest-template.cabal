@@ -11,6 +11,7 @@ build-type:     Simple
 library
   exposed-modules:
       API
+      Booleans
       Database
       Database.Codec
       Database.Query

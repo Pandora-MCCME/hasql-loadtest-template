@@ -8,12 +8,16 @@ import Types
 import Hasql.Statement
 import Hasql.TH
 
--- Main test case.
-queryMinimal :: Statement () Bool
-queryMinimal = [singletonStatement| SELECT 'true'::bool |]
+flagQueryTH :: Statement () Bool
+flagQueryTH = [singletonStatement| SELECT 't'::bool |]
 
-querySingular :: Statement () Result
-querySingular = refineResult (Right . resultTHDecoder) $
+flagQuery :: Statement () Bool
+flagQuery = Statement sql noParams boolDecoder False
+  where
+    sql = "SELECT 't'::bool"
+
+itemQueryTH :: Statement () Result
+itemQueryTH = refineResult (Right . resultTHDecoder) $
   [singletonStatement|
   SELECT id :: int8
        , name :: text
@@ -25,8 +29,22 @@ querySingular = refineResult (Right . resultTHDecoder) $
   LIMIT 1
   |]
 
-queryPseudoSingular :: Statement () [Result]
-queryPseudoSingular = refineResult (Right . resultListTHDecoder) $
+itemQuery :: Statement () Result
+itemQuery = Statement sql noParams resultSingletonDecoder False
+  where
+    sql = "\
+    \SELECT id :: int8\
+         \, name :: text\
+         \, color :: text\
+         \, background :: text \
+         \FROM objects \
+    \WHERE flag \
+    \ORDER BY orderc, id \
+    \LIMIT 1\
+    \"
+
+vectorQueryTH :: Statement () [Result]
+vectorQueryTH = refineResult (Right . resultListTHDecoder) $
   [vectorStatement|
   SELECT id :: int8
        , name :: text
@@ -35,23 +53,23 @@ queryPseudoSingular = refineResult (Right . resultListTHDecoder) $
   FROM objects
   WHERE flag
   ORDER BY orderc, id
-  LIMIT 1
   |]
 
-queryTH :: Statement () [Result]
-queryTH = refineResult (Right . resultListTHDecoder) $
-  [vectorStatement|
-  SELECT id :: int8
-       , name :: text
-       , color :: text?
-       , background :: text?
-  FROM objects
-  WHERE flag
-  ORDER BY orderc, id
-  |]
+listQuery :: Statement () [Result]
+listQuery = Statement sql noParams resultListDecoder False
+  where
+    sql = "\
+    \SELECT id :: int8\
+         \, name :: text\
+         \, color :: text\
+         \, background :: text \
+         \FROM objects \
+    \WHERE flag \
+    \ORDER BY orderc, id\
+    \"
 
-query :: Statement () [Result]
-query = Statement sql noParams resultListDecoder False
+vectorQuery :: Statement () [Result]
+vectorQuery = Statement sql noParams resultVectorDecoder False
   where
     sql = "\
     \SELECT id :: int8\

@@ -4,18 +4,24 @@ module API where
 
 import Servant
 
-import Types (Result)
+import Types
 
-type API = "hasql" :> "session" :> Get '[JSON] [Result]
-      :<|> "hasql" :> "session-minimal" :> Get '[JSON] Bool
-      :<|> "hasql" :> "session-th" :> Get '[JSON] [Result]
-      :<|> "hasql" :> "session-release" :> Get '[JSON] [Result]
-      :<|> "hasql" :> "transaction" :> Get '[JSON] [Result]
-      :<|> "hasql" :> "transaction-minimal" :> Get '[JSON] Bool
-      :<|> "hasql" :> "transaction-singlerow" :> Get '[JSON] Result
-      :<|> "hasql" :> "transaction-singlerow-thunk" :> Get '[JSON] [Result]
-      :<|> "hasql" :> "transaction-th" :> Get '[JSON] [Result]
-      :<|> "hasql" :> "transaction-release" :> Get '[JSON] [Result]
+type API = "hasql" :> "collection"
+        :> QueryParam' '[Required] "transaction" RunTransaction
+        :> QueryParam' '[Required] "th" RunTH
+        :> QueryParam' '[Required] "release" RunRelease
+        :> QueryParam' '[Required] "list" RunList
+        :> Get '[JSON] [Result]
+      :<|> "hasql" :> "item"
+        :> QueryParam' '[Required] "transaction" RunTransaction
+        :> QueryParam' '[Required] "th" RunTH
+        :> QueryParam' '[Required] "release" RunRelease
+        :> Get '[JSON] Result
+      :<|> "hasql" :> "flag"
+        :> QueryParam' '[Required] "transaction" RunTransaction
+        :> QueryParam' '[Required] "th" RunTH
+        :> QueryParam' '[Required] "release" RunRelease
+        :> Get '[JSON] Bool
       :<|> "plain" :> Get '[JSON] NoContent
 
 api :: Proxy API

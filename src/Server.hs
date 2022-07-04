@@ -23,14 +23,7 @@ app = runSettings settings . logStdoutDev =<< mkApp
           defaultSettings
 
 server :: Server API
-server = sessionHandler
-    :<|> sessionMinimalHandler
-    :<|> sessionTHHandler
-    :<|> sessionReleasedHandler
-    :<|> transactionHandler
-    :<|> transactionMinimalHandler
-    :<|> transactionSingularHandler
-    :<|> transactionSingularThunkHandler
-    :<|> transactionTHHandler
-    :<|> transactionReleasedHandler
+server = listHandler
+    :<|> itemHandler
+    :<|> flagHandler
     :<|> return NoContent

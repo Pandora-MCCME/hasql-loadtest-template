@@ -1,38 +1,24 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Handlers where
 
 import Control.Monad.IO.Class (liftIO)
 
-import Servant (Handler)
+import Servant
 
 import Database
 import Types
 
-sessionHandler :: Handler [Result]
-sessionHandler = liftIO $ run Session NoRelease query
+listHandler :: RunTransaction -> RunTH -> RunRelease -> RunList -> Handler [Result]
+listHandler mode NoTH release RowList = liftIO $ run mode release listQuery
+listHandler mode NoTH release RowVector = liftIO $ run mode release vectorQuery
+listHandler mode WithTH release RowVector = liftIO $ run mode release vectorQueryTH
+listHandler _ WithTH _ RowList =
+  throwError err404 {errBody = "hasql-th does not provide listStatement."}
 
-sessionMinimalHandler :: Handler Bool
-sessionMinimalHandler = liftIO $ run Session Release queryMinimal
+itemHandler :: RunTransaction -> RunTH -> RunRelease -> Handler Result
+itemHandler mode NoTH release = liftIO $ run mode release itemQuery
+itemHandler mode WithTH release = liftIO $ run mode release itemQueryTH
 
-sessionTHHandler :: Handler [Result]
-sessionTHHandler = liftIO $ run Session NoRelease queryTH
-
-sessionReleasedHandler :: Handler [Result]
-sessionReleasedHandler = liftIO $ run Session Release query
-
-transactionHandler :: Handler [Result]
-transactionHandler = liftIO $ run Transaction NoRelease query
-
-transactionMinimalHandler :: Handler Bool
-transactionMinimalHandler = liftIO $ run Transaction NoRelease queryMinimal
-
-transactionSingularHandler :: Handler Result
-transactionSingularHandler = liftIO $ run Transaction NoRelease querySingular
-
-transactionSingularThunkHandler :: Handler [Result]
-transactionSingularThunkHandler = liftIO $ run Transaction NoRelease queryPseudoSingular
-
-transactionTHHandler :: Handler [Result]
-transactionTHHandler = liftIO $ run Transaction NoRelease queryTH
-
-transactionReleasedHandler :: Handler [Result]
-transactionReleasedHandler = liftIO $ run Transaction Release queryTH
+flagHandler :: RunTransaction -> RunTH -> RunRelease -> Handler Bool
+flagHandler mode NoTH release = liftIO $ run mode release flagQuery
+flagHandler mode WithTH release = liftIO $ run mode release flagQueryTH

@@ -28,23 +28,23 @@ unprepareStatement :: Statement a b -> Statement a b
 unprepareStatement (Statement sql params result _) =
   Statement sql params result False
 
-implicitSession :: Statement () a -> Session a
-implicitSession = Session.statement () . unprepareStatement
+implicitTransaction = Session.statement () . unprepareStatement
+implicitTransaction :: Statement () a -> Session a
 
-explicitSession :: Statement () a -> Session a
-explicitSession = unpreparedTransaction ReadCommitted Read
-                . Transaction.statement ()
-                . unprepareStatement
+explicitTransaction :: Statement () a -> Session a
+explicitTransaction = unpreparedTransaction ReadCommitted Read
+                    . Transaction.statement ()
+                    . unprepareStatement
 
-session :: RunMode -> Statement () a -> Session a
-session Session = implicitSession
-session Transaction = explicitSession
+session :: RunTransaction -> Statement () a -> Session a
+session Session = implicitTransaction
+session Transaction = explicitTransaction
 
 finalize :: RunRelease -> Connection -> IO ()
 finalize NoRelease _ = pure ()
 finalize Release conn = release conn
 
-run :: RunMode -> RunRelease -> Statement () a -> IO a
+run :: RunTransaction -> RunRelease -> Statement () a -> IO a
 run mode releaseFlag stmt = do
   conn <- connect
   value <- fromRight <$> Session.run (session mode stmt) conn
