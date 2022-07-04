@@ -46,6 +46,7 @@ jobs:
         run: psql < initdb.sql
         env:
           PGHOST: postgres
+          PGUSER: postgres
           PGPORT: 5432
           PGPASSWORD: postgres
 
