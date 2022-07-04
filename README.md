@@ -1,10 +1,10 @@
-# Нагрузочное тестирование hasql
+# hasql load testing
 
-## Компоненты
-* база postgresql (запускается [сервисным контейнером](https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers) к тестам)
-* odyssey как основной пулер
-* pgbouncer как альтернативный пулер
-* тестирующий сервис на Хаскеле
-* Яндекс-танк
-* pgbench для сравнения
-* сценарии запуска всех тестов с аргументами - параметрами имён запросов - в виде GitHub Actions
+## Components
+* **postgresql** started as [service](https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers)
+* **odyssey** as main pooler
+* **pgbouncer** as alternative pooler
+* haskell testing server stored in this repo
+* **yandex-tank**
+* **pgbench** for comparison
+* github actions to run all tests
