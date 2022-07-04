@@ -12,9 +12,6 @@ import qualified Hasql.Encoders as E
 
 import Types
 
-boolDecoder :: D.Result Bool
-boolDecoder = D.singleRow $ D.column (D.nonNullable D.bool)
-
 resultTHDecoder :: (Int64, Text, Maybe Text, Maybe Text) -> Result
 resultTHDecoder ( resultF1
                 , resultF2
@@ -22,8 +19,11 @@ resultTHDecoder ( resultF1
                 , resultF4
                 ) = Result{..}
 
-resultListTHDecoder :: Vector (Int64, Text, Maybe Text, Maybe Text) -> [Result]
-resultListTHDecoder = map resultTHDecoder . toList
+resultVectorTHDecoder :: Vector (Int64, Text, Maybe Text, Maybe Text) -> [Result]
+resultVectorTHDecoder = map resultTHDecoder . toList
+
+boolDecoder :: D.Result Bool
+boolDecoder = D.singleRow $ D.column (D.nonNullable D.bool)
 
 resultDecoder :: D.Row Result
 resultDecoder = Result

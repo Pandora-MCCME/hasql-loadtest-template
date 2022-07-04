@@ -44,7 +44,7 @@ itemQuery = Statement sql noParams resultSingletonDecoder False
     \"
 
 vectorQueryTH :: Statement () [Result]
-vectorQueryTH = refineResult (Right . resultListTHDecoder) $
+vectorQueryTH = refineResult (Right . resultVectorTHDecoder) $
   [vectorStatement|
   SELECT id :: int8
        , name :: text
