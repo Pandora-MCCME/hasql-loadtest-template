@@ -1,7 +1,7 @@
 # Нагрузочное тестирование hasql
 
 ## Компоненты
-* база postgresql
+* база postgresql (запускается [сервисным контейнером](https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers) к тестам)
 * odyssey как основной пулер
 * pgbouncer как альтернативный пулер
 * тестирующий сервис на Хаскеле
