@@ -3,7 +3,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE IncoherentInstances #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
@@ -39,8 +38,8 @@ data RunTransaction = Session | Transaction
 data RunList = RowVector | RowList
   deriving (Eq, Enum, Read, Show, IsNewBool)
 
-instance IsNewBool a => FromHttpApiData a where
+instance {-# INCOHERENT #-} IsNewBool a => FromHttpApiData a where
   parseUrlPiece = fmap fromBool . parseUrlPiece
 
-instance IsNewBool a => ToHttpApiData a where
+instance {-# INCOHERENT #-} IsNewBool a => ToHttpApiData a where
   toUrlPiece = toUrlPiece . toBool
