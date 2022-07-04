@@ -16,9 +16,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  pgbench:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: postgres
 
     # Service containers to run with `container-job`
     services:
@@ -40,6 +40,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+
+      - name: Load initial data
+        run: psql < initdb.sql
+        env:
+          PGHOST: postgres
+          PGPORT: 5432
+          PGPASSWORD: postgres
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
