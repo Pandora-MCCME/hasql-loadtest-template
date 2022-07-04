@@ -53,7 +53,7 @@ jobs:
 
       # https://www.postgresql.org/docs/current/pgbench.html
       - name: Run pgbench
-        run: pgbench --clients=100 --file=pgbench.sql --jobs=2 --no-vacuum --rate=1000
+        run: pgbench --client=100 --file=pgbench.sql --jobs=2 --no-vacuum --rate=1000
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
