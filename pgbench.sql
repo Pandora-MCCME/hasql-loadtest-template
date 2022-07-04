@@ -1,7 +1,4 @@
-SELECT id :: int8
-    , name :: text
-    , color :: text?
-    , background :: text?
+SELECT id, name, color, background
 FROM objects
 WHERE flag
 ORDER BY orderc, id
