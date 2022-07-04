@@ -19,6 +19,7 @@ jobs:
   pgbench:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    container: postgres
 
     # Service containers to run with `container-job`
     services:
@@ -40,12 +41,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      - name: Debug
-        run: whoami
-
-      - name: Instqll psql
-        run: sudo apt update && sudo apt install -y postgresql-client
 
       - name: Load initial data
         run: psql < initdb.sql
