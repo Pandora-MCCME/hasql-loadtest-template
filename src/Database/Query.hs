@@ -15,8 +15,10 @@ queryMinimal = [singletonStatement| SELECT 'true'::bool |]
 querySingular :: Statement () Result
 querySingular = refineResult (Right . resultTHDecoder) $
   [singletonStatement|
-  SELECT id :: int8, name :: text, false::bool, false::bool
-       , color :: text?, background :: text?
+  SELECT id :: int8
+       , name :: text
+       , color :: text?
+       , background :: text?
   FROM objects
   WHERE flag
   ORDER BY orderc, id
@@ -26,8 +28,10 @@ querySingular = refineResult (Right . resultTHDecoder) $
 queryPseudoSingular :: Statement () [Result]
 queryPseudoSingular = refineResult (Right . resultListTHDecoder) $
   [vectorStatement|
-  SELECT id :: int8, name :: text, false::bool, false::bool
-       , color :: text?, background :: text?
+  SELECT id :: int8
+       , name :: text
+       , color :: text?
+       , background :: text?
   FROM objects
   WHERE flag
   ORDER BY orderc, id
@@ -37,8 +41,10 @@ queryPseudoSingular = refineResult (Right . resultListTHDecoder) $
 queryTH :: Statement () [Result]
 queryTH = refineResult (Right . resultListTHDecoder) $
   [vectorStatement|
-  SELECT id :: int8, name :: text, false::bool, false::bool
-        , color :: text?, background :: text?
+  SELECT id :: int8
+       , name :: text
+       , color :: text?
+       , background :: text?
   FROM objects
   WHERE flag
   ORDER BY orderc, id
@@ -48,9 +54,11 @@ query :: Statement () [Result]
 query = Statement sql noParams resultListDecoder False
   where
     sql = "\
-    \SELECT id :: int8, name :: text, false::bool, false::bool\
-          \, color :: text, background :: text \
-          \FROM objects \
-    \WHERE flag\
+    \SELECT id :: int8\
+         \, name :: text\
+         \, color :: text\
+         \, background :: text \
+         \FROM objects \
+    \WHERE flag \
     \ORDER BY orderc, id\
     \"

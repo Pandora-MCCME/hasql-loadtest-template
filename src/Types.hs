@@ -17,9 +17,7 @@ data RunMode = Session | Transaction
 data Result = Result {
   resultF1 :: Int64
 , resultF2 :: Text
-, resultF3 :: Bool
-, resultF4 :: Bool
-, resultF5 :: Maybe Text
-, resultF6 :: Maybe Text
+, resultF3 :: Maybe Text
+, resultF4 :: Maybe Text
 }
 deriveJSON defaultOptions ''Result

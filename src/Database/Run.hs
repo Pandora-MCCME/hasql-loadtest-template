@@ -50,11 +50,3 @@ run mode releaseFlag stmt = do
   value <- fromRight <$> Session.run (session mode stmt) conn
   finalize releaseFlag conn
   return value
-
-  --where
-  --  session = Session.statement ()
-  --          $ unprepareStatement stmt
-  --where
-  --  session = unpreparedTransaction ReadCommitted Read
-  --          . Transaction.statement ()
-  --          $ unprepareStatement stmt
