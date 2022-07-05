@@ -1,5 +1,10 @@
 echo installing for user $USER
 
+# Configure git
+git config --global user.email "tester@testing"
+git config --global user.name "Tester"
+git config pull.ff only
+
 sudo apt-get update
 
 # Install general and dev packages
@@ -8,14 +13,6 @@ tmux htop vim \
 strace valgrind gdb \
 tmuxinator \
 tcpdump
-
-# Haskell
-echo
-echo Installing Haskell
-sudo apt-get install -y \
-	ghc \
-	haskell-stack
-make build
 
 # Postgres
 echo
@@ -34,11 +31,22 @@ echo Installing PgBouncer
 sudo apt-get install -y pgbouncer
 envsubst < pgbouncer/pgbouncer.ini | sudo tee /etc/pgbouncer/pgbouncer.ini | head 
 envsubst < pgbouncer/userlist.txt | sudo tee /etc/pgbouncer/userlist.txt | head
-sudo systemctl enable pgbouncer
-sudo systemctl restart pgbouncer
+# sudo systemctl enable pgbouncer
+# sudo systemctl restart pgbouncer
 # test: psql -p 6432 -c "select * from objects"
 
-# Configure git
-git config --global user.email "tester@testing"
-git config --global user.name "Tester"
-git config pull.ff only
+# Haskell
+echo
+echo Installing Haskell
+sudo apt-get install -y \
+	ghc \
+	haskell-stack
+	curl \
+	librsvg2-2 \
+	libpq5 \
+	libtinfo5 \
+	build-essential \
+	locales \
+	ca-certificates \
+	zlib1g-dev
+make build
