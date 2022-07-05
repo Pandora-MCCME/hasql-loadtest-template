@@ -1,0 +1,24 @@
+# ./.tmuxinator.yml
+
+name: pgbench
+root: ~/loadtest
+
+# Runs on project start, always
+on_project_start: sudo systemctl start postgresql pgbouncer
+
+# Run on project start, the first time
+# on_project_first_start: command
+
+# Run on project start, after the first time
+# on_project_restart: command
+
+# Run on project exit ( detaching from tmux session )
+# on_project_exit: command
+
+on_project_stop: sudo service stop pgbouncer
+
+windows:
+  - editor:
+      panes:
+        - pgbench -p 6432 --client=100
+        - sudo tail -f /var/log/postgresql/pgbouncer.log
