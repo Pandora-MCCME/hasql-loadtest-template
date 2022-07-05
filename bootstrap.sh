@@ -10,11 +10,19 @@ tmuxinator \
 tcpdump
 
 # Postgres
-sudo apt-get install -y postgresql postgresql-client pgbouncer
-sudo service postgresql start
-sudo -u postgres createuser --no-password $USER
+sudo apt-get install -y postgresql postgresql-client
+sudo systemctl enable postgresql 
+sudo systemctl restart postgresql
+sudo -u postgres psql -c "CREATE USER $USER WITH PASSWORD '$USER'"
 sudo -u postgres createdb -O $USER $USER
 psql < initdb.sql
+
+# PgBouncer
+sudo apt-get install -y pgbouncer
+envsubst < pgbouncer/pgbouncer.ini | sudo tee /etc/pgbouncer/pgbouncer.ini | head 
+envsubst < pgbouncer/userlist.txt | sudo tee /etc/pgbouncer/userlist.txt | head
+sudo systemctl enable pgbouncer
+sudo systemctl restart pgbouncer
 
 # Configure git
 git config --global user.email "tester@testing"
