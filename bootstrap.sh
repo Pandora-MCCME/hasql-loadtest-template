@@ -9,7 +9,17 @@ strace valgrind gdb \
 tmuxinator \
 tcpdump
 
+# Haskell
+echo
+echo Installing Haskell
+sudo apt-get install -y \
+	ghc \
+	haskell-stack
+make build
+
 # Postgres
+echo
+echo Installing Postgres
 sudo apt-get install -y postgresql postgresql-client
 sudo systemctl enable postgresql 
 sudo systemctl restart postgresql
@@ -19,6 +29,8 @@ psql < initdb.sql
 # test: psql -c "select * from objects"
 
 # PgBouncer
+echo
+echo Installing PgBouncer
 sudo apt-get install -y pgbouncer
 envsubst < pgbouncer/pgbouncer.ini | sudo tee /etc/pgbouncer/pgbouncer.ini | head 
 envsubst < pgbouncer/userlist.txt | sudo tee /etc/pgbouncer/userlist.txt | head
