@@ -1,5 +1,4 @@
 echo installing for user $USER
-
 # Configure git
 git config --global user.email "tester@testing"
 git config --global user.name "Tester"
@@ -13,6 +12,10 @@ tmux htop vim \
 strace valgrind gdb \
 tmuxinator \
 tcpdump wrk \
+curl \
+zsh
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Postgres
 echo
