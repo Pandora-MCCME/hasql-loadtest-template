@@ -2,7 +2,7 @@ echo installing for user $USER
 
 sudo apt-get update
 
-# Instal general and dev packages
+# Install general and dev packages
 sudo apt-get install -y \
 tmux htop vim \
 strace valgrind gdb \
