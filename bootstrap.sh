@@ -12,7 +12,7 @@ sudo apt-get install -y \
 tmux htop vim \
 strace valgrind gdb \
 tmuxinator \
-tcpdump
+tcpdump wrk \
 
 # Postgres
 echo
