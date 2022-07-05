@@ -1,3 +1,10 @@
+FROM haskell AS builder
+
+COPY . .
+RUN echo $PWD
+RUN stack setup
+RUN stack install --local-bin-path bin
+
 FROM debian
 
 RUN apt-get update && apt-get install -y \
@@ -18,4 +25,4 @@ ENV LANG ru_RU.UTF-8
 ENV LANGUAGE ru_RU:ru  
 ENV LC_ALL ru_RU.UTF-8
 
-COPY bin bin
+COPY --from=builder bin bin
