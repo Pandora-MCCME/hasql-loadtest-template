@@ -1,7 +1,8 @@
 FROM haskell AS builder
 
+WORKDIR /build
 COPY . .
-RUN echo $PWD
+RUN apt-get update && apt-get install -y libpq-dev
 RUN stack setup
 RUN stack install --local-bin-path bin
 
@@ -25,4 +26,4 @@ ENV LANG ru_RU.UTF-8
 ENV LANGUAGE ru_RU:ru  
 ENV LC_ALL ru_RU.UTF-8
 
-COPY --from=builder bin bin
+COPY --from=builder /build/bin /bin
