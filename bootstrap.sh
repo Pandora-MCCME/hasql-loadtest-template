@@ -14,6 +14,7 @@ sudo apt-get install -y postgresql postgresql-client pgbouncer
 sudo service postgresql start
 sudo -u postgres createuser --no-password $USER
 sudo -u postgres createdb -O $USER $USER
+psql < initdb.sql
 
 # Configure git
 git config --global user.email "tester@testing"
