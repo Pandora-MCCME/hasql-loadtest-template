@@ -49,4 +49,4 @@ windows:
       layout: main-vertical
       panes:
         - ./bin/testing-service
-        - wrk -d 60 http://localhost:9000
+        - sleep 2; wrk -d 60 http://localhost:9000/hasql/transaction
