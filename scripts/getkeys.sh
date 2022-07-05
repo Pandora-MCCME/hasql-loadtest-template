@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Usage:
-# ./getkeys.sh >> ~/.ssh/authorized_keys
+# ./getkeys.sh > ~/.ssh/authorized_keys
 
 getkey() {
 while read url;
