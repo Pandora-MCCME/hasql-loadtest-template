@@ -1,43 +1,7 @@
-# ./.tmuxinator.yml
-
 name: hasql-postgres
 root: ~/loadtest
-
-# Runs on project start, always
-# on_project_start: command
-# on_project_start: sudo systemctl start pgbouncer
-
-# Run on project start, the first time
-# on_project_first_start: command
 on_project_start: sudo systemctl start pgbouncer
-
-# Run on project start, after the first time
-# on_project_restart: sudo systemctl start pgbouncer
-
-# Run on project exit ( detaching from tmux session )
-# on_project_exit: sudo systemctl stop pgbouncer
-
-# Run on project stop
 on_project_stop: sudo systemctl stop pgbouncer
-
-# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-# pre_window: rbenv shell 2.0.0-p247
-
-# Pass command line options to tmux. Useful for specifying a different tmux.conf.
-# tmux_options: -f ~/.tmux.mac.conf
-
-# Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
-# tmux_command: byobu
-
-# Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
-# startup_window: editor
-
-# Specifies (by index) which pane of the specified window will be selected on project startup. If not set, the first pane is used.
-# startup_pane: 1
-
-# Controls whether the tmux session should be attached to automatically. Defaults to true.
-# attach: false
-
 windows:
   - tester:
       layout: main-vertical
