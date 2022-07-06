@@ -15,8 +15,6 @@ tcpdump wrk \
 curl \
 zsh
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 # Postgres
 echo
 echo Installing Postgres
@@ -43,7 +41,7 @@ echo
 echo Installing Haskell
 sudo apt-get install -y \
 	ghc \
-	haskell-stack
+	haskell-stack \
 	curl \
 	librsvg2-2 \
 	libpq5 \
