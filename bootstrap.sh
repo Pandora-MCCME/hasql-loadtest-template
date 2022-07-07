@@ -27,13 +27,13 @@ psql < initdb.sql
 # test: psql -c "select * from objects"
 
 # PgBouncer
-echo
-echo Installing PgBouncer
-sudo apt-get install -y pgbouncer
-envsubst < pgbouncer/pgbouncer.ini | sudo tee /etc/pgbouncer/pgbouncer.ini | head 
-envsubst < pgbouncer/userlist.txt | sudo tee /etc/pgbouncer/userlist.txt | head
-# sudo systemctl enable pgbouncer
-# sudo systemctl restart pgbouncer
+#echo
+#echo Installing PgBouncer
+#sudo apt-get install -y pgbouncer
+#envsubst < pgbouncer/pgbouncer.ini | sudo tee /etc/pgbouncer/pgbouncer.ini | head 
+#envsubst < pgbouncer/userlist.txt | sudo tee /etc/pgbouncer/userlist.txt | head
+#sudo systemctl enable pgbouncer
+#sudo systemctl restart pgbouncer
 # test: psql -p 6432 -c "select * from objects"
 
 # Haskell
