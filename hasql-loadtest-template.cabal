@@ -31,6 +31,7 @@ library
     , hasql
     , hasql-th
     , hasql-transaction
+    , optparse-applicative
     , servant
     , servant-server
     , text
@@ -54,6 +55,7 @@ executable testing-service
     , hasql-loadtest-template
     , hasql-th
     , hasql-transaction
+    , optparse-applicative
     , servant
     , servant-server
     , text
