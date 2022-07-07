@@ -1,4 +1,7 @@
+{-# LANGUAGE RecordWildCards #-}
 module Server where
+
+import Options.Applicative
 
 import Network.Wai
 import Network.Wai.Handler.Warp
@@ -9,17 +12,33 @@ import System.IO
 import API
 import Handlers
 
-port :: Port
-port = 9000
+data Options = Options {
+    optionsPort :: Int
+  } deriving (Show, Eq)
+
+optionsParser :: Parser Options
+optionsParser = Options
+  <$> option auto
+      ( long "port"
+     <> short 'p'
+     <> metavar "PORT"
+     <> value 9000
+      )
+
+options :: ParserInfo Options
+options = info (optionsParser <**> helper)
+   ( fullDesc
+  <> progDesc "Hasql testing service"
+   )
 
 mkApp :: IO Application
 mkApp = return $ serve api server
 
-app :: IO ()
-app = runSettings settings . logStdoutDev =<< mkApp
+app :: Options -> IO ()
+app Options{..} = runSettings settings . logStdoutDev =<< mkApp
   where settings =
-          setPort port $
-          setBeforeMainLoop (hPutStrLn stderr ("listening on port " ++ show port)) $
+          setPort optionsPort $
+          setBeforeMainLoop (hPutStrLn stderr ("listening on port " ++ show optionsPort)) $
           defaultSettings
 
 server :: Server API

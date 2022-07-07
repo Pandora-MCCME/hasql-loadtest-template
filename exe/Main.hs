@@ -1,6 +1,8 @@
 module Main where
 
-import Server (app)
+import Server (app, options)
+
+import Options.Applicative (execParser)
 
 main :: IO ()
-main = app
+main = execParser options >>= app

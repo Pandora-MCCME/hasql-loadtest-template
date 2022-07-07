@@ -21,6 +21,7 @@ dependencies:
   - base
   - servant
   - servant-server
+  - optparse-applicative
   - hasql
   - hasql-th
   - hasql-transaction
