@@ -10,7 +10,7 @@ import Data.Vector (Vector, toList)
 import qualified Hasql.Decoders as D
 import qualified Hasql.Encoders as E
 
-import Types
+import App.Types
 
 resultTHDecoder :: (Int64, Text, Maybe Text, Maybe Text) -> Result
 resultTHDecoder ( resultF1

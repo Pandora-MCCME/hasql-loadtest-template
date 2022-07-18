@@ -19,12 +19,14 @@ executables:
 
 dependencies:
   - base
+  - mtl
   - servant
   - servant-server
   - optparse-applicative
   - hasql
   - hasql-th
   - hasql-transaction
+  - resource-pool
   - text
   - bytestring
   - vector

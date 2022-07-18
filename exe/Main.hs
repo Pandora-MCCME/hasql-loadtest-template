@@ -1,6 +1,7 @@
 module Main where
 
-import Server (app, options)
+import Server (app)
+import App.Options (options)
 
 import Options.Applicative (execParser)
 

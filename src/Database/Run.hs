@@ -1,10 +1,9 @@
+{- Internal module -}
 module Database.Run
-  (run)
+  ( module Database.Run
+  , Statement
+  )
   where
-
-import System.Environment (getEnv)
-
-import Data.ByteString.Char8 (pack)
 
 import Hasql.Connection
 import Hasql.Statement (Statement(..))
@@ -14,22 +13,21 @@ import qualified Hasql.Session as Session
 import qualified Hasql.Transaction as Transaction
 import Hasql.Transaction.Sessions
 
-import Types
+import App.Types
 
 fromRight :: Show a => Either a b -> b
 fromRight (Right a) = a
 fromRight (Left a) = error $ show a
 
-connect :: IO Connection
-connect = getEnv "POSTGRES"
-      >>= fmap fromRight . acquire . pack
+connect :: Settings -> IO Connection
+connect = fmap fromRight . acquire
 
 unprepareStatement :: Statement a b -> Statement a b
 unprepareStatement (Statement sql params result _) =
   Statement sql params result False
 
-implicitTransaction = Session.statement () . unprepareStatement
 implicitTransaction :: Statement () a -> Session a
+implicitTransaction = Session.statement () . unprepareStatement
 
 explicitTransaction :: Statement () a -> Session a
 explicitTransaction = unpreparedTransaction ReadCommitted Read
@@ -44,9 +42,9 @@ finalize :: RunRelease -> Connection -> IO ()
 finalize NoRelease _ = pure ()
 finalize Release conn = release conn
 
-run :: RunTransaction -> RunRelease -> Statement () a -> IO a
-run mode releaseFlag stmt = do
-  conn <- connect
+runIO :: Settings -> RunTransaction -> RunRelease -> Statement () a -> IO a
+runIO connStr mode releaseFlag stmt = do
+  conn <- connect connStr
   value <- fromRight <$> Session.run (session mode stmt) conn
   finalize releaseFlag conn
   return value

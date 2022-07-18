@@ -1,7 +1,8 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TypeApplications #-}
 module Server where
 
-import Options.Applicative
+import Control.Monad.Reader
 
 import Network.Wai
 import Network.Wai.Handler.Warp
@@ -10,39 +11,26 @@ import Servant
 import System.IO
 
 import API
+import qualified App
+import App.Options (Options(..))
 import Handlers
 
-data Options = Options {
-    optionsPort :: Int
-  } deriving (Show, Eq)
-
-optionsParser :: Parser Options
-optionsParser = Options
-  <$> option auto
-      ( long "port"
-     <> short 'p'
-     <> metavar "PORT"
-     <> value 9000
-      )
-
-options :: ParserInfo Options
-options = info (optionsParser <**> helper)
-   ( fullDesc
-  <> progDesc "Hasql testing service"
-   )
-
-mkApp :: IO Application
-mkApp = return $ serve api server
+mkApp :: Options -> IO Application
+mkApp opts = App.readSettings opts >>= \s -> return $ serve api (server s)
 
 app :: Options -> IO ()
-app Options{..} = runSettings settings . logStdoutDev =<< mkApp
+app opts@Options{..} = runSettings settings . logStdoutDev =<< mkApp opts
   where settings =
           setPort optionsPort $
           setBeforeMainLoop (hPutStrLn stderr ("listening on port " ++ show optionsPort)) $
           defaultSettings
 
-server :: Server API
-server = listHandler
-    :<|> itemHandler
-    :<|> flagHandler
-    :<|> return NoContent
+server :: App.Settings -> Server API
+server s = hoistServer (Proxy @API)
+             (flip runReaderT s . App.runApp) appServer
+
+appServer :: App.Server API
+appServer = listHandler
+       :<|> itemHandler
+       :<|> flagHandler
+       :<|> return NoContent

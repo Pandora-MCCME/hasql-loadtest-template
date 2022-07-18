@@ -3,7 +3,7 @@
 module Database.Query where
 
 import Database.Codec
-import Types
+import App.Types
 
 import Hasql.Statement
 import Hasql.TH

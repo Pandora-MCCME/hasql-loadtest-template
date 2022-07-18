@@ -11,14 +11,17 @@ build-type:     Simple
 library
   exposed-modules:
       API
-      Booleans
+      App
+      App.Booleans
+      App.Options
+      App.Types
       Database
       Database.Codec
+      Database.Pool
       Database.Query
       Database.Run
       Handlers
       Server
-      Types
   other-modules:
       Paths_hasql_loadtest_template
   hs-source-dirs:
@@ -31,7 +34,9 @@ library
     , hasql
     , hasql-th
     , hasql-transaction
+    , mtl
     , optparse-applicative
+    , resource-pool
     , servant
     , servant-server
     , text
@@ -55,7 +60,9 @@ executable testing-service
     , hasql-loadtest-template
     , hasql-th
     , hasql-transaction
+    , mtl
     , optparse-applicative
+    , resource-pool
     , servant
     , servant-server
     , text

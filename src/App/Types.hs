@@ -1,14 +1,14 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
-module Types
-  ( module Types
-  , module Booleans
+module App.Types
+  ( module App.Types
+  , module App.Booleans
   , Int64, Text
   )
   where
 
-import Booleans
+import App.Booleans
 
 import Data.Aeson.TH
 import Data.Text (Text)

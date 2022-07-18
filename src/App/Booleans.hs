@@ -6,7 +6,7 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
-module Booleans where
+module App.Booleans where
 
 import Servant.API (FromHttpApiData(..), ToHttpApiData(..))
 
@@ -36,6 +36,9 @@ data RunTransaction = Session | Transaction
   deriving (Eq, Enum, Read, Show, IsNewBool)
 
 data RunList = RowVector | RowList
+  deriving (Eq, Enum, Read, Show, IsNewBool)
+
+data RunPool = WithPool | WithoutPool
   deriving (Eq, Enum, Read, Show, IsNewBool)
 
 instance {-# INCOHERENT #-} IsNewBool a => FromHttpApiData a where
