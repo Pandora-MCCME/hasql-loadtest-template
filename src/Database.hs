@@ -9,12 +9,17 @@ import Control.Monad.Reader (ask)
 import Control.Monad.IO.Class (liftIO)
 
 import Database.Query
-import Database.Run (runIO, Statement)
+import Database.Run (connect, runIO, Statement)
+import Database.Pool
 
 import App
 import App.Types
 
-run :: RunTransaction -> RunRelease -> Statement () a -> App a
-run mode releaseFlag stmt = do
+run :: RunTransaction -> RunRelease -> RunPool -> Statement () a -> App a
+run mode releaseFlag pool stmt = do
   Settings{..} <- ask
-  liftIO $ runIO postgresConnectionString mode releaseFlag stmt
+  liftIO $ case pool of
+    WithPool -> withResource hasqlConnectionPool
+              $ runIO mode releaseFlag stmt
+    WithoutPool -> connect postgresConnectionString
+               >>= runIO mode releaseFlag stmt

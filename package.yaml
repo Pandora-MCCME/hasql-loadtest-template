@@ -26,7 +26,7 @@ dependencies:
   - hasql
   - hasql-th
   - hasql-transaction
-  - resource-pool
+  - resource-pool >= 0.3.0.0
   - text
   - bytestring
   - vector

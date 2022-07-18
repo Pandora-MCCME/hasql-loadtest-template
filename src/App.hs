@@ -27,13 +27,13 @@ import App.Options
 
 data Settings = Settings {
   postgresConnectionString :: DB.Settings
-, hasqlConnectionPool :: ~(Pool DB.Connection)
+, hasqlConnectionPool :: (Pool DB.Connection)
 }
 
 readSettings :: Options -> IO Settings
 readSettings Options{..} = do
   postgresConnectionString <- pack <$> getEnv optionsConnectionStringVariable
-  hasqlConnectionPool <- return undefined --instantiateConnectionPool postgresConnectionString optionsPoolSize
+  hasqlConnectionPool <- instantiateConnectionPool postgresConnectionString optionsPoolSize
   return Settings{..}
 
 newtype App a = App {runApp :: ReaderT Settings Handler a}

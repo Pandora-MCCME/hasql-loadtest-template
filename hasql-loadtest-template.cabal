@@ -36,7 +36,7 @@ library
     , hasql-transaction
     , mtl
     , optparse-applicative
-    , resource-pool
+    , resource-pool >=0.3.0.0
     , servant
     , servant-server
     , text
@@ -62,7 +62,7 @@ executable testing-service
     , hasql-transaction
     , mtl
     , optparse-applicative
-    , resource-pool
+    , resource-pool >=0.3.0.0
     , servant
     , servant-server
     , text

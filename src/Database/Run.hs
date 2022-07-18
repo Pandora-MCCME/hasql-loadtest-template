@@ -42,9 +42,8 @@ finalize :: RunRelease -> Connection -> IO ()
 finalize NoRelease _ = pure ()
 finalize Release conn = release conn
 
-runIO :: Settings -> RunTransaction -> RunRelease -> Statement () a -> IO a
-runIO connStr mode releaseFlag stmt = do
-  conn <- connect connStr
+runIO :: RunTransaction -> RunRelease -> Statement () a -> Connection -> IO a
+runIO mode releaseFlag stmt conn = do
   value <- fromRight <$> Session.run (session mode stmt) conn
   finalize releaseFlag conn
   return value
